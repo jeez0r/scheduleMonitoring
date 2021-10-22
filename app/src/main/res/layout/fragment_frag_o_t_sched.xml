@@ -1,0 +1,195 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:background="@color/dark"
+    android:orientation="horizontal"
+    tools:context=".fragments.FragOTSched">
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent" >
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+
+        <CalendarView
+            android:id="@+id/cv_otdate"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"/>
+
+        <LinearLayout
+            android:layout_weight="1"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+            <Button
+                android:id="@+id/btn_settimeout"
+                android:layout_weight="1"
+                android:layout_width="1dp"
+                android:textSize="17dp"
+                android:layout_height="wrap_content"
+                android:layout_margin="10dp"
+                android:backgroundTint="@color/lightnavy"
+                android:background="@drawable/button_shape"
+                android:text="Set Time Out"
+                android:textColor="@color/yellow"
+                android:paddingStart="20dp"
+                android:paddingEnd="30dp"
+                android:drawableStart="@drawable/ic_baseline_access_time_24"
+
+                />
+
+            <LinearLayout
+                android:layout_gravity="center"
+                android:layout_width="wrap_content"
+                android:orientation="vertical"
+                android:layout_height="wrap_content">
+
+                <TextView
+                    android:layout_gravity="center"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textColor="@color/yellow"
+                    android:text="Night Differential"/>
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal">
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:drawableLeft="@drawable/ic_baseline_nights_stay_24"/>
+
+                    <androidx.appcompat.widget.SwitchCompat
+                        android:id="@+id/sc_nightdif"
+                        android:layout_width="wrap_content"
+                        android:layout_height="10dp"
+                        android:layout_gravity="center"
+                        android:theme="@style/Theme.ScheduleMonitoring"/>
+
+                </LinearLayout>
+
+
+
+            </LinearLayout>
+
+
+
+
+        </LinearLayout>
+
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:layout_margin="5dp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:hint="REMARKS"
+            app:counterTextColor="@color/yellow"
+            app:counterOverflowTextColor="@color/yellow"
+            android:textColorHint="@color/yellow"
+            android:outlineAmbientShadowColor="@color/yellow"
+            app:placeholderTextColor="@color/yellow"
+            app:boxStrokeColor="@color/yellow"
+            >
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/tv_remarks"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textSize="17dp"
+                android:layout_margin="5dp"
+                android:textColor="@color/yellow"
+                android:outlineSpotShadowColor="@color/yellow"
+                android:outlineAmbientShadowColor="@color/yellow"
+                android:theme="@style/Theme.ScheduleMonitoring"/>
+
+        </com.google.android.material.textfield.TextInputLayout>
+
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/til_NightDiffHours"
+            android:layout_margin="5dp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:hint="No. of Hours of Night Differential"
+            app:counterTextColor="@color/yellow"
+            app:counterOverflowTextColor="@color/yellow"
+            android:textColorHint="@color/yellow"
+            android:outlineAmbientShadowColor="@color/yellow"
+            app:placeholderTextColor="@color/yellow"
+            app:boxStrokeColor="@color/yellow"
+
+            >
+
+            <com.google.android.material.textfield.TextInputEditText
+
+                android:id="@+id/tv_NightDiffHours"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:inputType="numberDecimal"
+                android:textSize="17dp"
+                android:layout_margin="5dp"
+                android:textColor="@color/yellow"
+                android:outlineSpotShadowColor="@color/yellow"
+                android:outlineAmbientShadowColor="@color/yellow"
+                android:theme="@style/Theme.ScheduleMonitoring"/>
+
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <Button
+                android:id="@+id/btn_save"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_margin="10dp"
+                android:layout_weight="1"
+                android:backgroundTint="@color/lightnavy"
+                android:background="@drawable/button_shape"
+                android:drawableStart="@drawable/ic_baseline_save_24"
+                android:paddingStart="20dp"
+                android:paddingEnd="30dp"
+                android:text="Save"
+                android:textColor="@color/yellow"
+                android:textSize="17dp" />
+
+
+            <Button
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/btn_cancel"
+                android:layout_weight="1"
+                android:layout_margin="10dp"
+                android:backgroundTint="@color/lightnavy"
+                android:background="@drawable/button_shape"
+                android:text="Cancel"
+                android:textColor="@color/yellow"
+                android:drawableStart="@drawable/ic_baseline_cancel_24"
+                android:paddingEnd="10dp"
+                android:paddingStart="20dp"
+                android:textSize="17dp"/>
+
+
+        </LinearLayout>
+
+    </LinearLayout>
+    </ScrollView>
+    </LinearLayout>
+
+
+
+
+
+

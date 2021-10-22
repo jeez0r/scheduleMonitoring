@@ -1,0 +1,145 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:background="@color/dark"
+    tools:context=".fragments.FragOTList">
+
+    <LinearLayout
+        android:background="@color/lightnavy"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="17sp"
+            android:textColor="@color/lightblue1"
+            android:text="Total OT Hours: "/>
+
+        <TextView
+            android:layout_weight="1"
+
+            android:textAlignment="textEnd"
+            android:id="@+id/tv_totalOThrs"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="17sp"
+            android:textStyle="bold"
+            android:textColor="@color/yellow"
+            android:text="--"/>
+
+
+
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:background="@color/lightnavy"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="17sp"
+            android:textColor="@color/lightblue1"
+            android:text="Date Range: "/>
+
+        <TextView
+            android:id="@+id/tv_daterange"
+            android:layout_weight="1"
+            android:textAlignment="textEnd"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="17sp"
+            android:textStyle="bold"
+            android:textColor="@color/yellow"
+            android:text="--"/>
+
+
+
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:background="@color/lightnavy"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="17sp"
+            android:textColor="@color/lightblue1"
+            android:text="Total Earn: "/>
+
+        <TextView
+            android:id="@+id/tv_totalEarn"
+            android:layout_weight="1"
+            android:textAlignment="textEnd"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="17sp"
+            android:textStyle="bold"
+            android:textColor="@color/yellow"
+            android:text="--"/>
+
+
+
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+        <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
+            android:id="@+id/pullToRefresh"
+            android:layout_width="wrap_content"
+            android:layout_weight="1"
+            android:layout_height="0dp">
+            <ListView
+                android:id="@+id/recview"
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_weight="1" />
+        </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
+
+
+
+
+        <Button
+            android:id="@+id/btn_daterange"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_gravity="bottom"
+            android:layout_margin="10dp"
+            android:layout_weight="0.1"
+            android:background="@color/lightnavy"
+            android:drawableStart="@drawable/ic_baseline_date_range_24"
+            android:paddingStart="20dp"
+            android:paddingEnd="30dp"
+            android:text="Select Date Rage"
+            android:textColor="@color/yellow"
+            android:textSize="17dp"
+
+            />
+    </LinearLayout>
+
+
+
+
+
+
+
+
+</LinearLayout>
