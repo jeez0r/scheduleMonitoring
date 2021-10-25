@@ -45,6 +45,7 @@ import java.util.Objects;
 
 import static android.provider.Contacts.Settings.getSetting;
 import static com.example.schedulemonitoring.fragments.FragSettings.KEY_OFFICE_HOUR;
+import static com.example.schedulemonitoring.fragments.FragSettings.KEY_REMAINDERS;
 import static com.example.schedulemonitoring.fragments.FragSettings.KEY_TEMP_OFFICE_HOUR;
 
 
@@ -70,7 +71,7 @@ public class FragOTSched extends Fragment {
     SwitchCompat sc_nightdif;
     int xnightDiff = 0;
     int t1Hour, t1Minute;
-    String xtimeout, xremarks, xdatenow , xtemptimeout;
+    String xtimeout, xremarks, xdatenow, xtemptimeout;
     TextInputEditText tv_remarks, tv_NightDiffHours;
     TextInputLayout til_NightDiffHours;
     String xOTDate;
@@ -133,11 +134,11 @@ public class FragOTSched extends Fragment {
 
         DateTimeFormatter dtf = DateTimeFormatter.ofPattern("MM/dd/yyyy");
         LocalDateTime now = LocalDateTime.now();
-        xOTDate = dtf.format(now);
+//        xOTDate = dtf.format(now);
         xdatenow = dtf.format(now);
 
 
-
+        SetDate();
 
         til_NightDiffHours.setVisibility(View.GONE);
 
@@ -145,7 +146,7 @@ public class FragOTSched extends Fragment {
         cv_otdate.setOnDateChangeListener(new CalendarView.OnDateChangeListener() {
             @Override
             public void onSelectedDayChange(@NonNull CalendarView view, int year, int month, int dayOfMonth) {
-                month += 1;
+                month+=1;
                 xOTDate = month + "/" + dayOfMonth + "/" + year;
                 Log.d(TAG, "xOTDate: " + xOTDate);
                 xOTMonth = month;
@@ -165,9 +166,15 @@ public class FragOTSched extends Fragment {
                                 //Getting the TIME OUT INPUT
                                 t1Hour = hourOfDay;
                                 t1Minute = minute;
+
+//                                 GET THE TIME ONLY
+                                Calendar calendar1 = Calendar.getInstance();
+                                calendar1.set(xOTYear, xOTMonth, xOTDayofmonth, t1Hour, t1Minute);
+                                xtemptimeout = (String) DateFormat.format("MM/dd/yyyy HH:mm", calendar1);
+//                                GET THE TIME WITH DATE
                                 Calendar calendar = Calendar.getInstance();
-                                calendar.set(xOTYear, xOTMonth, xOTDayofmonth, t1Hour, t1Minute);
-                                xtemptimeout = (String) DateFormat.format("MM/dd/yyyy HH:mm", calendar);
+                                calendar.set(0, 0, 0, t1Hour, t1Minute);
+
                                 xtimeout = (String) DateFormat.format("HH:mm", calendar);
                                 btn_settimeout.setText(DateFormat.format("HH:mm", calendar));
                                 Log.d(TAG, "onTimeSet: " + xtimeout);
@@ -179,8 +186,10 @@ public class FragOTSched extends Fragment {
                 timePickerDialog.updateTime(t1Hour, t1Minute);
 
                 timePickerDialog.show();
+        if(KEY_REMAINDERS.equals("ON")){
+            Toast.makeText(getActivity(), "Do not forget to set the Office Hour and Hour rate , in settings tab", Toast.LENGTH_LONG).show();
+        }
 
-                Toast.makeText(getActivity(), "Do not forget to set the Office Hour and Hour rate , in settings tab", Toast.LENGTH_LONG).show();
             }
         });
 
@@ -192,7 +201,10 @@ public class FragOTSched extends Fragment {
                 if (isChecked) {
 
                     til_NightDiffHours.setVisibility(View.VISIBLE);
-                    Toast.makeText(getActivity(), "Do not forget to set the Night differential rate, in settings tab", Toast.LENGTH_LONG).show();
+                    if(KEY_REMAINDERS.equals("ON")){
+                        Toast.makeText(getActivity(), "Do not forget to set the Night differential rate, in settings tab", Toast.LENGTH_LONG).show();
+                    }
+
                 } else {
 
                     til_NightDiffHours.setVisibility(View.GONE);
@@ -224,7 +236,7 @@ public class FragOTSched extends Fragment {
                         SimpleDateFormat format = new SimpleDateFormat("MM/dd/yyyy HH:mm");
                         Date date1 = format.parse(xtemptimeout);
                         Date date2 = format.parse(KEY_TEMP_OFFICE_HOUR);
-                         xtotalMilliSec = date1.getTime() - date2.getTime();
+                        xtotalMilliSec = date1.getTime() - date2.getTime();
 
                         Log.d(TAG, "date1: " + xtemptimeout);
                         Log.d(TAG, "date2: " + KEY_TEMP_OFFICE_HOUR);
@@ -245,7 +257,7 @@ public class FragOTSched extends Fragment {
                         if (success) {
                             Toast.makeText(getActivity(), "Overtime Successfully saved", Toast.LENGTH_SHORT).show();
                             xremarks = "";
-                            xOTDate = "";
+                            SetDate();
                             xtimeout = "";
                             xtemptimeout = "";
                             xnightDiff = 0;
@@ -259,7 +271,7 @@ public class FragOTSched extends Fragment {
 
                             cv_otdate.setDate(Objects.requireNonNull(new SimpleDateFormat("MM/dd/yyyy").parse(xdatenow)).getTime(), true, true);
 
-                        }else{
+                        } else {
                             Toast.makeText(getActivity(), "Overtime not saved. Please try Again.", Toast.LENGTH_SHORT).show();
                         }
 
@@ -285,7 +297,7 @@ public class FragOTSched extends Fragment {
             public void onClick(View v) {
                 try {
                     xremarks = "";
-                    xOTDate = "";
+                    SetDate();
                     xtimeout = "";
                     xnightDiff = 0;
                     xtotalMilliSec = 0;
@@ -318,11 +330,11 @@ public class FragOTSched extends Fragment {
 
             @Override
             public void afterTextChanged(Editable s) {
-              if( !(tv_NightDiffHours.length() == 0)){
-                  xnightDiff = Integer.parseInt(tv_NightDiffHours.getText().toString());
-              }else{
-                  xnightDiff = 0;
-              }
+                if (!(tv_NightDiffHours.length() == 0)) {
+                    xnightDiff = Integer.parseInt(tv_NightDiffHours.getText().toString());
+                } else {
+                    xnightDiff = 0;
+                }
             }
         });
 
@@ -332,11 +344,21 @@ public class FragOTSched extends Fragment {
     }
 
 
+    private void SetDate() {
+        Date date = new Date();
+        Calendar cal = Calendar.getInstance();
+        cal.setTime(date);
+        int xmonth = cal.get(Calendar.MONTH);
+        int xyear = cal.get(Calendar.YEAR);
+        int xdayofmonth = cal.get(Calendar.DAY_OF_MONTH);
+        xmonth+=1;
 
+        xOTMonth = xmonth;
+        xOTYear = xyear;
+        xOTDayofmonth = xdayofmonth;
 
-
-
-
+        xOTDate = xmonth + "/" + xdayofmonth + "/" + xyear;
+    }
 
 
 }

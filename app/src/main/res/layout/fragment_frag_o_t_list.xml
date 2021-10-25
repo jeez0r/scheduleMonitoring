@@ -24,7 +24,7 @@
 
         <TextView
             android:layout_weight="1"
-
+            android:layout_marginEnd="10dp"
             android:textAlignment="textEnd"
             android:id="@+id/tv_totalOThrs"
             android:layout_width="wrap_content"
@@ -53,6 +53,7 @@
             android:text="Date Range: "/>
 
         <TextView
+            android:layout_marginEnd="10dp"
             android:id="@+id/tv_daterange"
             android:layout_weight="1"
             android:textAlignment="textEnd"
@@ -82,6 +83,7 @@
             android:text="Total Earn: "/>
 
         <TextView
+            android:layout_marginEnd="10dp"
             android:id="@+id/tv_totalEarn"
             android:layout_weight="1"
             android:textAlignment="textEnd"

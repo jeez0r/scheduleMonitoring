@@ -37,17 +37,6 @@ public class MainMenu extends AppCompatActivity {
         tabLayout = (TabLayout) findViewById(R.id.tablayout);
         viewPager = (ViewPager) findViewById(R.id.viewPager);
 
-
-
-
-
-
-
-
-
-
-
-
         setDate();
         tabLayout.setupWithViewPager(viewPager);
         setupViewPager(viewPager);
@@ -61,11 +50,6 @@ public class MainMenu extends AppCompatActivity {
         adapterViewPage.addFragment(new FragOTList(), "OT List");
         adapterViewPage.addFragment(new FragSettings(), "Settings");
         viewPager.setAdapter(adapterViewPage);
-
-
-
-
-
 
     }
 
@@ -85,13 +69,9 @@ public class MainMenu extends AppCompatActivity {
                 KEY_DATETO = dtf.format(todaydate.withDayOfMonth(res));
             }
 
-
-
         } catch (Exception e) {
             e.printStackTrace();
         }
-
-
 
     }
 

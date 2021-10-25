@@ -2,7 +2,7 @@
     <!-- Base application theme. -->
     <style name="Theme.ScheduleMonitoring" parent="Theme.MaterialComponents.DayNight.DarkActionBar">
         <!-- Primary brand color. -->
-        <item name="colorPrimary">@color/yellow</item>
+        <item name="colorPrimary">@color/lightblue1</item>
         <item name="colorPrimaryVariant">@color/lightblue1</item>
         <item name="colorOnPrimary">@color/lightblue1</item>
         <!-- Secondary brand color. -->

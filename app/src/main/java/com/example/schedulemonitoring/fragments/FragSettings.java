@@ -1,6 +1,8 @@
 package com.example.schedulemonitoring.fragments;
 
+import android.app.AlertDialog;
 import android.app.TimePickerDialog;
+import android.content.DialogInterface;
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
@@ -211,8 +213,28 @@ public class FragSettings extends Fragment {
         btn_delete.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-//                getSetting();
-                databaseHelper.deleteAll();
+                DialogInterface.OnClickListener dialogClickListener = new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        switch (which){
+                            case DialogInterface.BUTTON_POSITIVE:
+                                //Do your Yes progress
+                                databaseHelper.deleteAll();
+                                Toast.makeText(getActivity(), "All data Deleted!", Toast.LENGTH_SHORT).show();
+                                break;
+
+
+                            case DialogInterface.BUTTON_NEGATIVE:
+                                //Do your No progress
+
+                                break;
+                        }
+                    }
+                };
+                AlertDialog.Builder ab = new AlertDialog.Builder(getActivity());
+                ab.setMessage("Are you sure to delete all Records?").setPositiveButton("Yes", dialogClickListener)
+                        .setNegativeButton("No", dialogClickListener).show();
+
             }
         });
 

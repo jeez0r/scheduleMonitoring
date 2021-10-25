@@ -1,12 +1,16 @@
 package com.example.schedulemonitoring.Adapter;
 
+import android.app.AlertDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
+import android.widget.Button;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -15,6 +19,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.example.schedulemonitoring.Database.DatabaseHelper;
 import com.example.schedulemonitoring.Model.ModelOTSched;
 import com.example.schedulemonitoring.R;
+import com.example.schedulemonitoring.fragments.FragOTList;
 
 import org.w3c.dom.Text;
 
@@ -31,7 +36,8 @@ public class AdapterOTList extends ArrayAdapter<ModelOTSched> {
     long otMiliSec, xtotalhours, xtotalmin, xOverallTotalHours, xOverallTotalMin;
     Integer nightdiffhour;
     String xtotalOT;
-
+    FragOTList fragOTList;
+    public static int KEY_OT_ID;
 
     public AdapterOTList(Context context, List<ModelOTSched> modelOTSchedList) {
         super(context, R.layout.layout_o_t_list, modelOTSchedList);
@@ -75,6 +81,7 @@ public class AdapterOTList extends ArrayAdapter<ModelOTSched> {
         TextView tv_otlist_totOTHrs = (TextView) view.findViewById(R.id.tv_otlist_totOTHrs);
         TextView tv_otlist_remarks = (TextView) view.findViewById(R.id.tv_otlist_remarks);
         TextView tv_otlist_nightdiff = (TextView) view.findViewById(R.id.tv_otlist_nightdiff);
+        Button btn_list_delete = (Button) view.findViewById(R.id.btn_list_delete);
         databaseHelper = new DatabaseHelper(context);
 
         tv_otlist_timeout.setText(modelOTSchedList.get(position).getXtimeout());
@@ -114,8 +121,40 @@ public class AdapterOTList extends ArrayAdapter<ModelOTSched> {
 
         }
 
+        btn_list_delete.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                KEY_OT_ID =  modelOTSchedList.get(position).getXid();
+                DialogInterface.OnClickListener dialogClickListener = new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        switch (which){
+                            case DialogInterface.BUTTON_POSITIVE:
+                                //Do your Yes progress
+                             databaseHelper.deleteOne();
+                                Toast.makeText(context, "Overtime on " + modelOTSchedList.get(position).getXdateIn() +"successfully deleted", Toast.LENGTH_SHORT).show();
+                                notifyDataSetChanged();
+                                break;
+
+
+                            case DialogInterface.BUTTON_NEGATIVE:
+                                //Do your No progress
+
+                                break;
+                        }
+                    }
+                };
+                AlertDialog.Builder ab = new AlertDialog.Builder(context);
+                ab.setMessage("Are you sure to delete?").setPositiveButton("Yes", dialogClickListener)
+                        .setNegativeButton("No", dialogClickListener).show();
+            }
+        });
+
+
 
         Log.d(TAG, "xTotalMiliSec: " + position + "/" + xOverallTotalHours + " Hours" + xOverallTotalMin + " Min" + xTotalMiliSec + "/" );
         return view;
     }
+
+
 }

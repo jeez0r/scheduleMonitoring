@@ -32,6 +32,7 @@ import java.util.List;
 
 import static android.content.ContentValues.TAG;
 import static com.example.schedulemonitoring.Adapter.AdapterOTList.xTotalMiliSec;
+import static com.example.schedulemonitoring.Database.DatabaseHelper.KEY_TOTAL_EARN;
 import static com.example.schedulemonitoring.Database.DatabaseHelper.xoverallTotalOT;
 
 /**
@@ -59,7 +60,7 @@ public class FragOTList extends Fragment implements DatePickerDialog.OnDateSetLi
    private List <ModelOTSched> modelOTSched;
     ListView listview;
     Button btn_daterange;
-    TextView tv_tv_totalOThrs, tv_daterange;
+    TextView tv_tv_totalOThrs, tv_daterange,tv_totalEarn;
     DatabaseHelper databaseHelper;
 
 
@@ -105,6 +106,7 @@ public class FragOTList extends Fragment implements DatePickerDialog.OnDateSetLi
         btn_daterange = (Button) rootview1.findViewById(R.id.btn_daterange);
         tv_tv_totalOThrs = (TextView) rootview1.findViewById(R.id.tv_totalOThrs);
         tv_daterange = (TextView) rootview1.findViewById(R.id.tv_daterange);
+        tv_totalEarn = (TextView) rootview1.findViewById(R.id.tv_totalEarn);
 
         pullToRefresh.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
@@ -125,21 +127,32 @@ public class FragOTList extends Fragment implements DatePickerDialog.OnDateSetLi
 
 
       tv_daterange.setText(KEY_DATEFORM + "  TO  " + KEY_DATETO);
+
         initListview();
+        tv_totalEarn.setText(String.valueOf(KEY_TOTAL_EARN));
+
         return rootview1;
     }
 
 
 
-private void initListview(){
+
+public void initListview(){
     xTotalMiliSec = 0;
     databaseHelper = new DatabaseHelper(getActivity());
-    List<ModelOTSched>  modelOTSchedList = databaseHelper.selectAllProduct();
+    List<ModelOTSched> modelOTSchedList = databaseHelper.selectAllProduct();
 
     adapterOTList = new AdapterOTList(getContext(), modelOTSchedList);
     listview.setAdapter(adapterOTList);
+    adapterOTList.notifyDataSetChanged();
 
     tv_tv_totalOThrs.setText(xoverallTotalOT);
+    tv_totalEarn.setText(String.valueOf(KEY_TOTAL_EARN));
+
+    if(modelOTSchedList.size() == 0) {
+        tv_tv_totalOThrs.setText("---");
+        tv_totalEarn.setText(String.valueOf("---"));
+    }
 }
 
     @Override
@@ -167,7 +180,6 @@ private void initListview(){
                         int month = datePickerDialog.getDatePicker().getMonth() + 1;
                         KEY_DATEFORM =  month + "/"+ datePickerDialog.getDatePicker().getDayOfMonth() +"/" + datePickerDialog.getDatePicker().getYear();
                         Log.d(TAG, "onClick: " +  KEY_DATEFORM);
-
                         ShowCalendarTO();
                     }
                 });

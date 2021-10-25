@@ -19,6 +19,7 @@
 
 
         <CalendarView
+            android:theme="@style/Theme.ScheduleMonitoring"
             android:id="@+id/cv_otdate"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"/>
@@ -49,6 +50,8 @@
                 android:layout_gravity="center"
                 android:layout_width="wrap_content"
                 android:orientation="vertical"
+                android:background="@drawable/setting_outline"
+                android:outlineSpotShadowColor="@color/white"
                 android:layout_height="wrap_content">
 
                 <TextView

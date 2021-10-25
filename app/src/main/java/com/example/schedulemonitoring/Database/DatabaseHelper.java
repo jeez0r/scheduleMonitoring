@@ -14,9 +14,11 @@ import com.example.schedulemonitoring.Model.ModelOTSched;
 import java.util.ArrayList;
 import java.util.List;
 
+import static com.example.schedulemonitoring.Adapter.AdapterOTList.KEY_OT_ID;
 import static com.example.schedulemonitoring.fragments.FragOTList.KEY_DATEFORM;
 import static com.example.schedulemonitoring.fragments.FragOTList.KEY_DATETO;
 import static com.example.schedulemonitoring.fragments.FragSettings.KEY_HOUR_RATE;
+import static com.example.schedulemonitoring.fragments.FragSettings.KEY_NIGHTDIFF_RATE;
 
 public class DatabaseHelper  extends SQLiteOpenHelper {
     private static final String TAG = "DatabaseHelper";
@@ -28,8 +30,9 @@ public class DatabaseHelper  extends SQLiteOpenHelper {
     public static final String COLUMN_ID = "ID";
     public static final String COLUMN_TotalOTMilliSec = "TotalOTMilliSec";
     public static String xoverallTotalOT;
-    long xtotalmilisec , xtotalhours, xtotalmins;
-    long xTotalearnHours , xTotalearnMin, xTotalEarn;
+    public static long KEY_TOTAL_EARN;
+    long xtotalmilisec , xtotalhours, xtotalmins, xTotalNightdiff;
+    long xTotalearnHours , xTotalearnMin, xTotalEarn, xTotalNightdiffEarn;
 
 
     public DatabaseHelper(@Nullable Context context) {
@@ -86,17 +89,23 @@ public class DatabaseHelper  extends SQLiteOpenHelper {
                 String xdateIn = cursor.getString( 2);
                 String xtimeout = cursor.getString(3);
                 Integer xnightdiff =  cursor.getInt(4);
-                long xtotalOThours = cursor.getLong(5);
+                long xsinglehours = cursor.getLong(5);
 
-                if (!(xtotalOThours < 0)) {
-                    xtotalmilisec += xtotalOThours;
+                if (!(xtotalmilisec < 0)) {
+              xtotalmilisec += xsinglehours;
+                    xtotalhours += xsinglehours / (60 * 60 * 1000) % 24;
+                    xtotalmins += xsinglehours / (60 * 1000) % 60;
+                }
+
+                if(xnightdiff > 0){
+                    xTotalNightdiff += xnightdiff;
                 }
 
 
 
 
-                ModelOTSched newOT= new ModelOTSched(xremarks, xdateIn,xtimeout,xtotalOThours,xnightdiff,otid);
-                Log.d(TAG, "selectAllProduct: " +xremarks +"/"+xdateIn+" "+xtimeout+"/"+xtotalOThours+"/"+xnightdiff.toString());
+                ModelOTSched newOT= new ModelOTSched(xremarks, xdateIn,xtimeout,xsinglehours,xnightdiff,otid);
+                Log.d(TAG, "selectAllProduct: " +xremarks +"/"+xdateIn+" "+xtimeout+"/"+xsinglehours+"/"+xnightdiff.toString());
                 returnList.add(newOT);
 
             }while (cursor.moveToNext());
@@ -129,27 +138,36 @@ public class DatabaseHelper  extends SQLiteOpenHelper {
 
     }
 
-    public boolean deleteOne(String productModel){
+    public boolean deleteOne(){
         // find product model in the database. if it found delete it and return true.
         // if its not found , return false
 
         SQLiteDatabase db = this.getWritableDatabase();
-        String queryStringDelete ="DELETE FROM " + OT_TABLE + " WHERE " + COLUMN_ID + " = " + productModel;
+        String queryStringDelete ="DELETE FROM " + OT_TABLE + " WHERE " + COLUMN_ID + " = " + KEY_OT_ID;
 
         Cursor cursor = db.rawQuery(queryStringDelete, null);
 
-        return cursor.moveToFirst();
+        if(cursor.moveToFirst()){
+            return true;
+        }else{
+            return false;
+        }
 
     }
 
     private void HoursComputation(){
-        xtotalhours = xtotalmilisec / (60 * 60 * 1000) % 24;
-        xtotalmins = xtotalmilisec / (60 * 1000) % 60;
+//       xtotalhours = xtotalmilisec / (60 * 60 * 1000) % 24;
+//        xtotalmins = xtotalmilisec / (60 * 1000) % 60;
 
-        xTotalearnHours  = xtotalhours * KEY_HOUR_RATE;
+
+        long xtemptotalhours;
+        xtemptotalhours = xtotalhours - xTotalNightdiff;
+
+        xTotalNightdiffEarn = xTotalNightdiff * KEY_NIGHTDIFF_RATE;
+
+        xTotalearnHours  = xtemptotalhours * KEY_HOUR_RATE;
         xTotalearnMin  = xtotalmins * KEY_HOUR_RATE / 60;
-        xTotalEarn = xTotalearnHours +  xTotalearnMin;
-
+        KEY_TOTAL_EARN = xTotalearnHours +  xTotalearnMin + xTotalNightdiffEarn;
 
         if (xtotalhours < 2 ) {
 
@@ -166,6 +184,8 @@ public class DatabaseHelper  extends SQLiteOpenHelper {
                 xoverallTotalOT = xtotalhours + " Hours & " + xtotalmins + " Minutes";
             }
         }
+
+
 
         Log.d(TAG, "xoverallTotalOT: " + xoverallTotalOT + xtotalmilisec);
     }
