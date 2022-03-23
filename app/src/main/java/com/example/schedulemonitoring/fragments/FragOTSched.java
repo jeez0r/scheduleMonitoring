@@ -238,6 +238,11 @@ public class FragOTSched extends Fragment {
                         Date date2 = format.parse(KEY_TEMP_OFFICE_HOUR);
                         xtotalMilliSec = date1.getTime() - date2.getTime();
 
+                        if (xtotalMilliSec > 1861200000){
+
+                        }
+                        long temphours =  xtotalMilliSec / (60 * 60 * 1000) % 24;
+
                         Log.d(TAG, "date1: " + xtemptimeout);
                         Log.d(TAG, "date2: " + KEY_TEMP_OFFICE_HOUR);
                         Log.d(TAG, "TOTALMILLISEC: " + xtotalMilliSec);

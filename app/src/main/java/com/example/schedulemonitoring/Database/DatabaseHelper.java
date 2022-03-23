@@ -41,7 +41,7 @@ public class DatabaseHelper  extends SQLiteOpenHelper {
 
     @Override
     public void onCreate(SQLiteDatabase db) {
-        String createTableStatement = "CREATE TABLE " + OT_TABLE + " (" + COLUMN_ID + " INTEGER PRIMARY KEY AUTOINCREMENT," + COLUMN_Remarks + " TEXT, " + COLUMN_DATE + " TEXT, " + COLUMN_TimeOut + " TEXT, " + COLUMN_NightDiff + " INT, " + COLUMN_TotalOTMilliSec + " LONG )";
+        String createTableStatement = "CREATE TABLE " + OT_TABLE + " (" + COLUMN_ID + " INTEGER PRIMARY KEY AUTOINCREMENT," + COLUMN_Remarks + " TEXT, " + COLUMN_DATE + " TEXT, " + COLUMN_TimeOut + " TEXT, " + COLUMN_NightDiff + " INT, " + COLUMN_TotalOTMilliSec + " BIGINT )";
         db.execSQL(createTableStatement);
 
 
